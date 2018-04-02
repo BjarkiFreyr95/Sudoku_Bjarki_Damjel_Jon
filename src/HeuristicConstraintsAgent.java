@@ -1,14 +1,15 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.PriorityQueue;
 import java.util.Stack;
 
 import edu.princeton.cs.algs4.StdDraw;
 
-public class CounteringConstraintsAgent {
-	CounteringConstraintState current = null;
+public class HeuristicConstraintsAgent {
+	HeuristicConstraintsState current = null;
 	
 	int boardSize;
-	CounteringConstraintsAgent(int theBoardSize) {
+	HeuristicConstraintsAgent(int theBoardSize) {
 		boardSize = theBoardSize;
 		init();
 	}
@@ -21,10 +22,10 @@ public class CounteringConstraintsAgent {
 		boolean hasReachedFour = false;
 		boolean hasReachedFive = false;
 		boolean hasReachedSix = false;
-		current = new CounteringConstraintState(new int[boardSize][boardSize], 0, 0, getFirstAvailMoves(), new ArrayList<int[]>());
-		CounteringConstraintState nextState = null;
-		List<Integer> availMoves = new ArrayList<Integer>();
-		Stack<CounteringConstraintState> frontier = new Stack<CounteringConstraintState>();
+		current = new HeuristicConstraintsState(new int[boardSize][boardSize], 0, 0, (int)Math.pow(boardSize, 3));
+		HeuristicConstraintsState nextState = null;
+		PriorityQueue<HeuristicConstraintsState> availMoves = new PriorityQueue<HeuristicConstraintsState>();
+		Stack<HeuristicConstraintsState> frontier = new Stack<HeuristicConstraintsState>();
 		frontier.add(current);
 		int maxStates = (int)Math.pow(boardSize, 3);
 		System.out.println("power is: " + maxStates);
@@ -36,9 +37,10 @@ public class CounteringConstraintsAgent {
 			current = frontier.pop();
 			if (!current.goalState()) {
 				availMoves = current.availMoves();
-				for (int i = 0; i < availMoves.size(); i++) {
-					nextState = current.nextState(availMoves.get(i));
-					frontier.add(nextState);
+				int availSize = availMoves.size();
+				for (int i = 0; i < availSize; i++) {
+					//nextState = current.nextState(availMoves.get(i));
+					frontier.add(availMoves.remove());
 				}
 			}
 			else {
@@ -93,7 +95,7 @@ public class CounteringConstraintsAgent {
 		
 	}
 	
-	CounteringConstraintState getCurrent() {
+	HeuristicConstraintsState getCurrent() {
 		return current;
 	}
 	
@@ -101,21 +103,7 @@ public class CounteringConstraintsAgent {
 		return current.getBoard();
 	}
 	
-	ArrayList<ArrayList<ArrayList<Integer>>> getFirstAvailMoves(){
-		ArrayList<ArrayList<ArrayList<Integer>>> sumMoves = new ArrayList<ArrayList<ArrayList<Integer>>>();
-		for (int i = 0; i < boardSize; i++) {
-			sumMoves.add(new ArrayList<ArrayList<Integer>>());
-			for (int j = 0; j < boardSize; j++) {
-				sumMoves.get(i).add(new ArrayList<Integer>());
-				for (int k = 1; k <= boardSize; k++) {
-					sumMoves.get(i).get(j).add(k);
-				}
-			}
-		}
-		return sumMoves;
-	}
-	
-	void draw(CounteringConstraintState current) {
+	void draw(HeuristicConstraintsState current) {
     	// We implemented a draw method that shows how the agent operates. You need algs4. library for this to work and comment this out
     	StdDraw.pause(500);
 		int mapSize[] = new int[2];

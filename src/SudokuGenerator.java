@@ -1,62 +1,59 @@
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Stack;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Random;
 
 import edu.princeton.cs.algs4.StdDraw;
 
-public class BruteForceAgent {
+public class SudokuGenerator {
+	Random rn = new Random();
+	int nLeft;
+	int[][] board;
+	int bSize;
 	
-	BruteForceState current = null;
-	int states;
 	
-	int boardSize;
-	BruteForceAgent(int theBoardSize) {
-		boardSize = theBoardSize;
-		init();
+	SudokuGenerator(int theBoard[][]){
+		bSize = theBoard.length;
+		nLeft = bSize*bSize;
+		board = theBoard;
 	}
 	
-	void init() {
-		states = 0;
-		current = new BruteForceState(new int[boardSize][boardSize], 0, 0);
-		BruteForceState nextState = null;
-		List<Integer> availMoves = new ArrayList<Integer>();
-		Stack<BruteForceState> frontier = new Stack<BruteForceState>();
-		frontier.add(current);
-		while (true) {
-			if (frontier.isEmpty()) {
-				System.out.println("States: " + states);
-				break;
-			}
-			current = frontier.pop();
-			if (!current.goalState()) {
-				availMoves = current.availMoves();
-				for (int i = 0; i < availMoves.size(); i++) {
-					nextState = current.nextState(availMoves.get(i));
-					frontier.add(nextState);
-				}
-			}
-			else {
-				System.out.println("States: " + states);
-				break;
-			}
-			states++;
-			draw(current);
-			
+	void generateMap() {
+		ArrayList<Integer> tempList = new ArrayList<Integer>();
+		for (int i = 0; i < bSize * bSize; i++) {
+			tempList.add(i);
 		}
+		Queue<Integer> canTry = new LinkedList<Integer>(tempList);
 		
+		while(!canTry.isEmpty()) {
+			int x = 0;
+			int y = 0;
+			int nextNum = canTry.remove();
+			x = nextNum%bSize;
+			y = nextNum/bSize;
+			int[][] boardCopy = new int[bSize][bSize];
+			for (int i = 0; i < bSize; i++) {
+				boardCopy[i] = board[i].clone();
+			}
+			boardCopy[x][y] = 0;
+			improvedSolver sol = new improvedSolver(boardCopy);
+			if (sol.goalState()) {
+				nLeft--;
+				board[x][y] = 0;
+			}
+			if (nLeft%10 == 0) {
+				System.out.println("nLeft: " + nLeft);
+			}
+		}
+		System.out.println("Stopped with " + nLeft + " numbers left");
+		draw();
 	}
 	
-	BruteForceState getCurrent() {
-		return current;
-	}
-	
-	int[][] getBoard() {
-		return current.getBoard();
-	}
-	
-	void draw(BruteForceState current) {
+	void draw() {
+		int boardSize = bSize;
     	// We implemented a draw method that shows how the agent operates. You need algs4. library for this to work and comment this out
-    	StdDraw.pause(1000);
+    	StdDraw.pause(500);
 		int mapSize[] = new int[2];
 		mapSize[0] = boardSize;
 		mapSize[1] = boardSize;
@@ -79,7 +76,6 @@ public class BruteForceAgent {
         }
         StdDraw.setPenRadius();
         
-        int[][] board = current.getBoard();
         StdDraw.setPenColor(0, 0, 0);
         for(int i = 0; i < board.length; i++) {
         	for (int j = 0; j < board[0].length; j++) {
@@ -89,4 +85,5 @@ public class BruteForceAgent {
         	}
         }
     }
+	
 }
