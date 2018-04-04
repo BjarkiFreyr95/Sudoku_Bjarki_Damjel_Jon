@@ -21,6 +21,7 @@ public class improvedState {
 	List<Integer> numbersNotChecked;
 	boolean[][] needToCheck;
 	
+	// simple constructor
 	improvedState(int[][] theBoard, boolean[][][] theAvailMoves, int theNumbersLeft, int[] theMove){
 		board = theBoard;
 		availMoves = theAvailMoves;
@@ -48,8 +49,9 @@ public class improvedState {
 	}
 
 	
-	// this function goes through the board and tries to find any move (if it finds it we missed it).
+	// this function goes through the board and tries to find any move that we could have done (if it finds it we missed it).
 	void seeIfTrue() {
+		// seeing if any cell has only one available move.
 		for (int i = 0; i < boardSize; i++) {
 			for (int j = 0; j < boardSize; j++) {
 				int tempCounter = 0;

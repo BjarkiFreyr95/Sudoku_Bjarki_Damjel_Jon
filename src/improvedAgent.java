@@ -1,13 +1,16 @@
 import java.util.List;
 import java.util.Random;
 import java.util.Stack;
+import java.lang.Integer;
 
 import edu.princeton.cs.algs4.StdDraw;
 public class improvedAgent {
 	int boardSize;
 	improvedState current;
+	int states;
 	
 	improvedAgent(int theBoardSize){
+		states = 0;
 		boardSize = theBoardSize;
 		init();
 	}
@@ -39,6 +42,7 @@ public class improvedAgent {
 						frontier.add(current.nextState(new int[] {thePositionOfInsertedNumber[0], thePositionOfInsertedNumber[1], availMoves.get(i)}));
 					}
 				}
+				states++;
 			}
 			else {
 				break;
@@ -46,13 +50,22 @@ public class improvedAgent {
 			drawCounter++;
 			if (drawCounter == 10000) {
 				drawCounter = 0;
-				draw(current);
+				init();
+				break;
+				//draw(current);
 			}
+			//to see the map developing, uncomment the line below.
+			//draw(current);
 		}
 		System.out.println("finished");
-		draw(current);
+		//draw(current);
 		
 	}
+	
+	int getStates() {
+		return states;
+	}
+	
 	
 	//creates a new boolean[][][]
 	boolean[][][] getNewAvailMoves() {

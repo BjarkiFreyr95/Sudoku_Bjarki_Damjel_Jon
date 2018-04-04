@@ -1,92 +1,96 @@
 import edu.princeton.cs.algs4.StdDraw;
+import java.lang.Integer;
 
 public class Main {
 
 	public static void main(String[] args) {
 		
-		// In sudoku the board needs to be square number (4, 9, 16, 25, 36) where the root is whole number.
+		//When you go over this project we recommend looking mostly at the improvedAgent, improvedState and improvedSolver since they are our final and most advanced (also well commented).
+		//We included the other agents and their state if you want to see how much they differentiated from the other agents.
+		//We created a simple instructions below with examples of how to use program. We recommend you go over them all before testing or trying out the program. 
+		
+		// In sudoku the boardSize needs to be square number (4, 9, 16, 25, 36) where the root is whole number.
 		int boardSize;
 		//with size 9
+		// boardSize is the size of the board, for example 9 would create a 9x9 sudoku board.
 		boardSize = 9;
-		//BruteForceAgent bfa = new BruteForceAgent(boardSize);
-		//System.out.println("cca: ");
-		//CounteringConstraintsAgent cca = new CounteringConstraintsAgent(boardSize);
-		//int[][] board = cca.getBoard();
-		//SudokuGenerator gen = new SudokuGenerator(board);
-		//gen.generateMap();
-		//System.out.println("hca: ");
-		//HeuristicConstraintsAgent hca = new HeuristicConstraintsAgent(boardSize);
-		//improvedAgent imp = new improvedAgent(boardSize);
-		//SudokuGenerator gen = new SudokuGenerator(imp.getBoard());
-		//gen.generateMap();
-		//int[][] theBoard, boolean[][][] theAvailMoves, int theNumbersLeft, int[] theMove
-		
+		// The lines here below are the different agents we implemented. This will (try) to create a new board with size (boardSize)x(boardSize).
+		// We recommend using improvedAgent since that agent is our final agent (the best one) and can create the largest map (36x36). The worst agents can still go as high as 16x16.
 		/*
-		boolean[][][] tempBoolean = new boolean[4][4][4];
-		tempBoolean[0][0][0] = true;
-		tempBoolean[1][0][0] = true;
-		tempBoolean[2][0][0] = true;
-		tempBoolean[3][0][0] = true;
-		tempBoolean[3][1][0] = true;
-		tempBoolean[2][1][0] = true;
-		tempBoolean[3][2][0] = true;
-		tempBoolean[3][3][0] = true;
-		
-		
-		int[][] board = new int[4][4];
-		improvedState imp = new improvedState(board, tempBoolean, 16, new int[] {0, 1, 3});
-		imp.updateAvailMovesInBoxForFirstMove(0, 0, 1);
-		imp.updateAvailMovesInBoxForFirstMove(2, 2, 1);
-		/*
-		draw(imp);
-		imp.printMissingMoves();
-		
-		
-		board[0][1] = 7;
-		board[4][1] = 8;
-		board[6][1] = 5;
-		board[1][2] = 9;
-		board[4][2] = 7;
-		board[7][2] = 4;
-		board[0][3] = 2;
-		board[3][3] = 6;
-		board[8][3] = 8;
-		board[2][4] = 5;
-		board[6][4] = 4;
-		board[0][5] = 1;
-		board[5][5] = 3;
-		board[8][5] = 9;
-		board[1][6] = 4;
-		board[4][6] = 2;
-		board[7][6] = 3;
-		board[2][7] = 3;
-		board[4][7] = 1;
-		board[8][7] = 6;
-		board[2][8] = 2;
+		BruteForceAgent bfa = new BruteForceAgent(boardSize);
+		HeuristicConstraintsAgent hca = new HeuristicConstraintsAgent(boardSize);
+		CounteringConstraintsAgent cca = new CounteringConstraintsAgent(boardSize);
+		improvedAgent imp = new improvedAgent(boardSize);
 		*/
-		//Solver sol = new Solver(board);
-		//sol.solve(false);
 		
 		
+		// If you want to see the drawing of the map, you need to get the board and place it inside the draw function (a draw function is below). 
+		//You will need to set up edu.princeton.cs.algs4.StdDraw library for this to work.
+		// an example is below (  draw(agentName.getBoard())  )
+		// you should only draw one at a time since the drawing updates (it does not create new drawings).
+		/*
+		// this shows a drawing of the completed maps.
+		draw(bfa.getBoard());
+		draw(hca.getBoard());
+		draw(cca.getBoard());
+		draw(imp.getBoard());
+		*/
 		
 		
-	}
-	static boolean[][][] getNewAvailMoves(int boardSize) {
-		boolean[][][] newAvailMoves = new boolean[boardSize][boardSize][boardSize];
-		for (int i = 0; i < boardSize; i++) {
-			for (int j = 0; j < boardSize; j++) {
-				for (int k = 0; k < boardSize; k++) {
-					newAvailMoves[i][j][k] = true;
-				}
-			}
+		// when you send a map inside the generator, only improvedAgent sends a copy of his board. Therefore you must draw before generating a puzzle if you want to see the completed map
+		// with agents other than improvedAgent.
+		// to create a map to solve (after we removed some of the numbers) send in the finished board from one of the agents above using .getBoard(), for an example
+		/*
+		SudokuGenerator gen;
+		gen = new SudokuGenerator(bfa.getBoard());
+		gen = new SudokuGenerator(hca.getBoard());
+		gen = new SudokuGenerator(cca.getBoard());
+		gen = new SudokuGenerator(imp.getBoard());
+		*/
+		
+		//If you want to draw the solvable map you can do something like
+		//draw(gen.getBoard());
+		
+		
+		// If you want to get the number of states, you can do following.
+		//System.out.println(imp.getStates());
+		
+		
+		// here below is an example of how to try out one of the agent, see the amount of states and see the map itself.
+		/*
+		boardSize = 16;
+		improvedAgent imp = new improvedAgent(boardSize);
+		System.out.println("States: " + imp.getStates());
+		draw(imp.getBoard());
+		*/
+		
+		
+		// Here below we created a method to see some results of how good one of the agent is
+		// By doing this you can see the time in milliseconds and the average states needed to create the map.
+		// boardSize = 25 took an average 170 milliseconds for my computer (with improvedAgent). 
+		// boardSize = 36 took an average 2880 milliseconds for my computer (with improvedAgent).
+		
+		/*
+		long startTime = System.currentTimeMillis();
+		int totalStates = 0;
+		// sizes of the board can be (4, 9, 16, 25, 36)
+		boardSize = 25;
+		improvedAgent imp;
+		// numberOfBoards is how many times do you want to get a new board. 
+		int numberOfBoards = 10;
+		for (int i = 0; i < numberOfBoards; i++) {
+			imp = new improvedAgent(boardSize);
+			totalStates += imp.getStates();
 		}
-		return newAvailMoves;
+		System.out.println("Average time for " + boardSize + "x" + boardSize + " using IMP : " + ((long)(System.currentTimeMillis() - startTime)/numberOfBoards));
+		System.out.println("Average states for" + boardSize + "x" + boardSize + " using IMP : " + totalStates/numberOfBoards);
+		*/
 	}
 	
-	static void draw(improvedState current) {
+	static void draw(int[][] board) {
     	// We implemented a draw method that shows how the agent operates. You need algs4. library for this to work and comment this out
     	StdDraw.pause(500);
-    	int boardSize = current.boardSize;
+    	int boardSize = board.length;
 		int mapSize[] = new int[2];
 		mapSize[0] = boardSize;
 		mapSize[1] = boardSize;
@@ -109,7 +113,6 @@ public class Main {
         }
         StdDraw.setPenRadius();
         
-        int[][] board = current.copyBoard();
         StdDraw.setPenColor(0, 0, 0);
         for(int i = 0; i < board.length; i++) {
         	for (int j = 0; j < board[0].length; j++) {

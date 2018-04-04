@@ -3,6 +3,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Random;
+import java.lang.Integer;
 
 import edu.princeton.cs.algs4.StdDraw;
 
@@ -17,6 +18,7 @@ public class SudokuGenerator {
 		bSize = theBoard.length;
 		nLeft = bSize*bSize;
 		board = theBoard;
+		generateMap();
 	}
 	
 	void generateMap() {
@@ -24,6 +26,7 @@ public class SudokuGenerator {
 		for (int i = 0; i < bSize * bSize; i++) {
 			tempList.add(i);
 		}
+		Collections.shuffle(tempList);
 		Queue<Integer> canTry = new LinkedList<Integer>(tempList);
 		
 		while(!canTry.isEmpty()) {
@@ -42,12 +45,21 @@ public class SudokuGenerator {
 				nLeft--;
 				board[x][y] = 0;
 			}
+			
+			// the if statement below is to get some feedBack (good for larger maps like 36x36 which take longer time).
 			if (nLeft%10 == 0) {
 				System.out.println("nLeft: " + nLeft);
 			}
+			//uncomment below to see the map developing
+			//draw();
+			
 		}
 		System.out.println("Stopped with " + nLeft + " numbers left");
-		draw();
+		//draw();
+	}
+	
+	int[][] getBoard() {
+		return board;
 	}
 	
 	void draw() {

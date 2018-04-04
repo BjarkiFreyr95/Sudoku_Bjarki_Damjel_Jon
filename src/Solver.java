@@ -2,8 +2,12 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+import java.lang.Integer;
 
 import edu.princeton.cs.algs4.StdDraw;
+
+// this solver is not the better solver. You can use it be changing the solver inside the SudokuGenerator class. This is an old version which was too slow to generate larger maps.
+
 
 public class Solver {
 	boolean changesMade;
@@ -115,7 +119,7 @@ public class Solver {
 		
 	}
 	
-	
+	// returns a copy of the current board.
 	int[][] copyBoard(){
 		int[][] copyB = new int[boardSize][boardSize];
 		for (int i = 0; i < boardSize; i++) {

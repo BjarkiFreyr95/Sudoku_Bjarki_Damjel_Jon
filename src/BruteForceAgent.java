@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
+import java.lang.Integer;
 
 import edu.princeton.cs.algs4.StdDraw;
 
@@ -24,11 +25,12 @@ public class BruteForceAgent {
 		frontier.add(current);
 		while (true) {
 			if (frontier.isEmpty()) {
-				System.out.println("States: " + states);
+				//System.out.println("States: " + states);
 				break;
 			}
 			current = frontier.pop();
 			if (!current.goalState()) {
+				states++;
 				availMoves = current.availMoves();
 				for (int i = 0; i < availMoves.size(); i++) {
 					nextState = current.nextState(availMoves.get(i));
@@ -36,14 +38,18 @@ public class BruteForceAgent {
 				}
 			}
 			else {
-				System.out.println("States: " + states);
+				//System.out.println("States: " + states);
 				break;
 			}
-			states++;
-			draw(current);
-			
+			// uncomment the line below to see the map developing.
+			//draw(current);
 		}
+		System.out.println("finished");
 		
+	}
+	
+	int getStates() {
+		return states;
 	}
 	
 	BruteForceState getCurrent() {

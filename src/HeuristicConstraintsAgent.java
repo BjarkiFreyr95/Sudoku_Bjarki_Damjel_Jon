@@ -1,36 +1,28 @@
-import java.util.ArrayList;
-import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Stack;
+import java.lang.Integer;
 
 import edu.princeton.cs.algs4.StdDraw;
 
 public class HeuristicConstraintsAgent {
 	HeuristicConstraintsState current = null;
+	int states;
 	
 	int boardSize;
 	HeuristicConstraintsAgent(int theBoardSize) {
+		states = 0;
 		boardSize = theBoardSize;
 		init();
 	}
 	
 	void init() {
-		int states = 0;
-		boolean hasReachedOne = false;
-		boolean hasReachedTwo = false;
-		boolean hasReachedThree = false;
-		boolean hasReachedFour = false;
-		boolean hasReachedFive = false;
-		boolean hasReachedSix = false;
 		current = new HeuristicConstraintsState(new int[boardSize][boardSize], 0, 0, (int)Math.pow(boardSize, 3));
 		HeuristicConstraintsState nextState = null;
 		PriorityQueue<HeuristicConstraintsState> availMoves = new PriorityQueue<HeuristicConstraintsState>();
 		Stack<HeuristicConstraintsState> frontier = new Stack<HeuristicConstraintsState>();
 		frontier.add(current);
-		int maxStates = (int)Math.pow(boardSize, 3);
-		System.out.println("power is: " + maxStates);
 		while (true) {
-			states++;
+			
 			if (frontier.isEmpty()) {
 				break;
 			}
@@ -42,57 +34,22 @@ public class HeuristicConstraintsAgent {
 					//nextState = current.nextState(availMoves.get(i));
 					frontier.add(availMoves.remove());
 				}
+				states++;
 			}
 			else {
 				break;
 			}
-			if (hasReachedOne == false) {
-				if (current.yCord * boardSize > 100 ) {
-					System.out.println("reached 100!");
-					hasReachedOne = true;
-				}
-			}
-			else if (hasReachedTwo == false) {
-				if (current.yCord * boardSize > 200 ) {
-					System.out.println("reached 200!");
-					hasReachedTwo = true;
-				}
-			}
-			else if (hasReachedThree == false) {
-				if (current.yCord * boardSize > 300 ) {
-					System.out.println("reached 300!");
-					hasReachedThree = true;
-				}
-			}
-			else if (hasReachedFour == false) {
-				if (current.yCord * boardSize > 400 ) {
-					System.out.println("reached 400!");
-					hasReachedFour = true;
-				}
-			}
-			else if (hasReachedFive == false) {
-				if (current.yCord * boardSize > 500 ) {
-					System.out.println("reached 500!");
-					hasReachedFive = true;
-				}
-			}
-			else if (hasReachedSix == false) {
-				if (current.yCord * boardSize > 600 ) {
-					System.out.println("reached 600!");
-					hasReachedSix = true;
-				}
-			}
-			if (states > maxStates) {
-				System.out.println("finally reached: " + current.yCord * boardSize + " at " + states);
-				draw(current);
-				init();
-				break;
-			}
-			
+			//to see the map developing, uncomment the line below.
+			//draw(current);
 		}
-		draw(current);
-		System.out.println("States: " + states);
+		System.out.println("finished");
+		//draw(current);
+		//System.out.println("States: " + states);
 		
+	}
+	
+	int getStates() {
+		return states;
 	}
 	
 	HeuristicConstraintsState getCurrent() {

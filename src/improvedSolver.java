@@ -171,7 +171,6 @@ public class improvedSolver {
 		}
 	}
 	
-	
 	// Creating new board array to send into the next state
 	int[][] copyBoard(){
 		int[][] copyB = new int[boardSize][boardSize];
